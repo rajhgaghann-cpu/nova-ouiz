@@ -1,0 +1,1227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVA QUIZ | Learn Beyond Limits</title>
+
+<style>
+:root {
+  --bg: #0b1020;
+  --panel: #151d35;
+  --panel2: #1c2745;
+  --purple: #8965ff;
+  --blue: #36b8ff;
+  --text: #f5f5ff;
+  --muted: #aab4d0;
+  --green: #35d69b;
+  --red: #ff667e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: radial-gradient(circle at top right,#27315a,#0b1020 55%);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+button, input, select, textarea { font: inherit; }
+
+button { cursor: pointer; }
+
+header {
+  padding: 18px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ffffff16;
+  background: #0b1020cc;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(15px);
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg,#a88aff,#36c9ff);
+  color: transparent;
+  background-clip: text;
+}
+
+.logo span { color: white; }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pill {
+  background: #252e4d;
+  padding: 9px 13px;
+  border-radius: 30px;
+  color: #c9c6ff;
+  font-size: 13px;
+}
+
+main {
+  width: min(1050px,92%);
+  margin: 35px auto;
+}
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+.hero {
+  text-align: center;
+  margin: 25px 0 35px;
+}
+
+.hero h1 {
+  font-size: clamp(32px,6vw,54px);
+  margin-bottom: 12px;
+}
+
+.gradient {
+  background: linear-gradient(90deg,#a98aff,#3acbff);
+  color: transparent;
+  background-clip: text;
+}
+
+.hero p, .muted { color: var(--muted); line-height: 1.6; }
+
+.card {
+  background: linear-gradient(145deg,#1a2440,#131a30);
+  border: 1px solid #ffffff12;
+  border-radius: 19px;
+  padding: 23px;
+  margin-bottom: 20px;
+  box-shadow: 0 12px 35px #0002;
+}
+
+.card h2 { margin-bottom: 18px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 15px;
+}
+
+label {
+  display: block;
+  color: #dce0fa;
+  font-size: 14px;
+  margin: 12px 0 8px;
+}
+
+input, select, textarea {
+  width: 100%;
+  background: #0e162d;
+  border: 1px solid #364363;
+  color: white;
+  padding: 14px;
+  border-radius: 10px;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--purple);
+}
+
+.primary {
+  background: linear-gradient(90deg,#8058ff,#398dff);
+  color: white;
+  border: 0;
+  padding: 14px 20px;
+  border-radius: 11px;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 17px;
+  transition: .2s;
+}
+
+.primary:hover { filter: brightness(1.15); transform: translateY(-2px); }
+
+.secondary {
+  background: #273352;
+  color: white;
+  border: 1px solid #455479;
+  padding: 11px 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.stat {
+  background: #1a2440;
+  padding: 19px;
+  border-radius: 15px;
+  border: 1px solid #ffffff12;
+}
+
+.stat strong {
+  display: block;
+  font-size: 27px;
+  color: #a98aff;
+  margin-top: 8px;
+}
+
+.stat small { color: var(--muted); }
+
+.topic-info {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.quiz-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.progress {
+  height: 9px;
+  background: #293451;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.progress div {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg,#9868ff,#35c6ff);
+  transition: .3s;
+}
+
+.question {
+  font-size: 23px;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  background: #202c49;
+  color: white;
+  border: 1px solid #3a496d;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+  margin: 11px 0;
+  transition: .2s;
+}
+
+.option:hover:not(:disabled) {
+  background: #343c67;
+  border-color: #a18aff;
+}
+
+.option.correct {
+  border-color: var(--green);
+  background: #164d40;
+}
+
+.option.wrong {
+  border-color: var(--red);
+  background: #542a3b;
+}
+
+.option:disabled { cursor: default; }
+
+.feedback {
+  display: none;
+  padding: 17px;
+  border-radius: 12px;
+  background: #253553;
+  line-height: 1.6;
+  margin: 17px 0;
+}
+
+.result-score {
+  font-size: 65px;
+  text-align: center;
+  color: #a98aff;
+  font-weight: 900;
+  margin: 20px;
+}
+
+.result-title { text-align: center; font-size: 28px; }
+
+.review-item {
+  padding: 15px;
+  background: #202c49;
+  border-radius: 12px;
+  margin: 12px 0;
+  line-height: 1.6;
+}
+
+.review-item p { color: var(--muted); font-size: 14px; }
+
+footer {
+  text-align: center;
+  color: #75809f;
+  padding: 35px;
+  font-size: 13px;
+}
+
+.hidden { display: none !important; }
+
+@media(max-width:600px) {
+  .grid { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: 1fr; }
+  main { margin-top: 20px; }
+  .card { padding: 17px; }
+  header { padding: 15px 4%; }
+  .logo { font-size: 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">✦ NOVA <span>QUIZ</span></div>
+  <div class="header-right">
+    <span class="pill">🚀 Learn Beyond Limits</span>
+  </div>
+</header>
+
+<main>
+
+<!-- HOME SCREEN -->
+<section id="home" class="screen active">
+
+  <div class="hero">
+    <h1>Welcome to <span class="gradient">NOVA QUIZ</span></h1>
+    <p>Your personal learning and revision destination.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <small>⭐ Total XP</small>
+      <strong id="totalXP">0</strong>
+    </div>
+    <div class="stat">
+      <small>🏆 Quizzes completed</small>
+      <strong id="totalQuizzes">0</strong>
+    </div>
+    <div class="stat">
+      <small>🎯 Best score</small>
+      <strong id="bestScore">0%</strong>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>👨‍🎓 Student Profile</h2>
+
+    <label>Your Name</label>
+    <input id="studentName" placeholder="Enter your name">
+
+    <div class="grid">
+      <div>
+        <label>🎓 Select Your Class</label>
+        <select id="classSelect" onchange="updateSubjects()">
+          <option value="">Choose class</option>
+          <option value="1">Class 1</option>
+          <option value="2">Class 2</option>
+          <option value="3">Class 3</option>
+          <option value="4">Class 4</option>
+          <option value="5">Class 5</option>
+          <option value="6">Class 6</option>
+          <option value="7">Class 7</option>
+          <option value="8">Class 8</option>
+          <option value="9">Class 9</option>
+          <option value="10">Class 10</option>
+          <option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+      </div>
+
+      <div>
+        <label>📚 Select Subject</label>
+        <select id="subjectSelect" onchange="updateTopics()">
+          <option value="">Choose class first</option>
+        </select>
+      </div>
+    </div>
+
+    <label>💡 Choose Your Interested Topic</label>
+    <select id="topicSelect">
+      <option value="">Choose subject first</option>
+    </select>
+
+    <div class="grid">
+      <div>
+        <label>⚡ Difficulty</label>
+        <select id="difficulty">
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+          <option value="All">Mixed difficulty</option>
+        </select>
+      </div>
+      <div>
+        <label>📝 Number of Questions</label>
+        <select id="questionCount">
+          <option value="5">5 Questions</option>
+          <option value="10">10 Questions</option>
+          <option value="15">15 Questions</option>
+          <option value="20">20 Questions</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="primary" onclick="startQuiz()">
+      START LEARNING 🚀
+    </button>
+    <p class="topic-info">Choose your class, subject and topic to begin.</p>
+  </div>
+
+  <div class="card">
+    <h2>✍️ Create Your Own Questions</h2>
+    <p class="muted">Add your own revision questions to your selected class, subject and topic.</p>
+
+    <label>Question</label>
+    <textarea id="newQuestion" rows="2" placeholder="Enter your question"></textarea>
+
+    <div class="grid">
+      <div>
+        <label>Option A</label>
+        <input id="optA">
+        <label>Option B</label>
+        <input id="optB">
+      </div>
+      <div>
+        <label>Option C</label>
+        <input id="optC">
+        <label>Option D</label>
+        <input id="optD">
+      </div>
+    </div>
+
+    <label>Correct Answer</label>
+    <select id="correctAnswer">
+      <option value="0">Option A</option>
+      <option value="1">Option B</option>
+      <option value="2">Option C</option>
+      <option value="3">Option D</option>
+    </select>
+
+    <label>Explanation</label>
+    <textarea id="newExplanation" rows="2" placeholder="Explain the answer"></textarea>
+
+    <button class="primary" onclick="addQuestion()">➕ Add Question</button>
+  </div>
+
+  <div class="card">
+    <h2>📖 Your Learning Tips</h2>
+    <p class="muted">• Practice a little every day.</p>
+    <p class="muted">• Read explanations after each answer.</p>
+    <p class="muted">• Repeat topics where you lose marks.</p>
+    <p class="muted">• Challenge yourself with harder questions.</p>
+  </div>
+
+</section>
+
+
+<!-- QUIZ SCREEN -->
+<section id="quiz" class="screen">
+
+  <div class="card">
+
+    <div class="quiz-top">
+      <span class="pill" id="quizSubject">Subject</span>
+      <span class="pill" id="quizClass">Class</span>
+      <span class="pill" id="timer">⏱ 30</span>
+      <span class="pill" id="quizScore">⭐ 0 XP</span>
+    </div>
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+
+    <p class="muted" id="questionCounter"></p>
+
+    <h2 class="question" id="questionText"></h2>
+
+    <div id="options"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <button id="nextButton" class="primary hidden" onclick="nextQuestion()">
+      NEXT QUESTION ➜
+    </button>
+
+    <button class="secondary" onclick="exitQuiz()">
+      Exit Quiz
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- RESULT SCREEN -->
+<section id="result" class="screen">
+
+  <div class="card">
+
+    <h2 class="result-title">🎉 Quiz Completed!</h2>
+
+    <div class="result-score" id="finalScore">0%</div>
+
+    <p class="muted" style="text-align:center" id="resultMessage"></p>
+
+    <div class="stats" style="margin-top:25px">
+      <div class="stat">
+        <small>Correct answers</small>
+        <strong id="correctCount">0</strong>
+      </div>
+      <div class="stat">
+        <small>Wrong answers</small>
+        <strong id="wrongCount">0</strong>
+      </div>
+      <div class="stat">
+        <small>XP earned</small>
+        <strong id="earnedXP">0</strong>
+      </div>
+    </div>
+
+    <h2>📚 Review Your Answers</h2>
+    <div id="review"></div>
+
+    <button class="primary" onclick="retryQuiz()">TRY AGAIN 🔄</button>
+    <button class="secondary" onclick="showHome()">BACK TO DASHBOARD</button>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  ✦ NOVA QUIZ • Learn Beyond Limits • Keep Growing!
+</footer>
+
+
+<script>
+
+// ----------------------------------
+// SUBJECTS AND TOPICS
+// ----------------------------------
+
+const classSubjects = {
+  1:["Mathematics","English","EVS"],
+  2:["Mathematics","English","EVS"],
+  3:["Mathematics","English","EVS","Science"],
+  4:["Mathematics","English","EVS","Science"],
+  5:["Mathematics","English","Science","Social Science"],
+  6:["Mathematics","Science","English","Social Science","Computer Science"],
+  7:["Mathematics","Science","English","Social Science","Computer Science"],
+  8:["Mathematics","Science","English","Social Science","Computer Science"],
+  9:["Mathematics","Science","English","Social Science","Computer Science"],
+  10:["Mathematics","Science","English","Social Science","Computer Science"],
+  11:["Mathematics","Physics","Chemistry","Biology","English","Computer Science"],
+  12:["Mathematics","Physics","Chemistry","Biology","English","Computer Science"]
+};
+
+const topicData = {
+  "Mathematics":[
+    "Addition and Subtraction","Multiplication and Division",
+    "Fractions","Algebra","Geometry","Mensuration","Statistics"
+  ],
+  "Science":[
+    "Plants and Animals","Human Body","Force and Motion",
+    "Light","Electricity","Matter","Environment"
+  ],
+  "Physics":[
+    "Motion","Force","Work and Energy","Electricity","Magnetism"
+  ],
+  "Chemistry":[
+    "Atoms and Molecules","Elements and Compounds",
+    "Chemical Reactions","Acids and Bases"
+  ],
+  "Biology":[
+    "Cell Structure","Human Body","Plant Biology",
+    "Reproduction","Genetics"
+  ],
+  "English":[
+    "Grammar","Tenses","Nouns and Pronouns",
+    "Vocabulary","Reading Comprehension"
+  ],
+  "Social Science":[
+    "History","Geography","Civics","Economics"
+  ],
+  "Computer Science":[
+    "Computer Basics","HTML","CSS","JavaScript","Programming"
+  ],
+  "EVS":[
+    "Our Environment","Plants","Animals","Water","Our Neighbourhood"
+  ]
+};
+
+// ----------------------------------
+// SAMPLE QUESTION BANK
+// ----------------------------------
+
+const defaultQuestions = [
+
+{
+subject:"Science",topic:"Plants and Animals",
+difficulty:"Easy",
+q:"Which part of a plant usually absorbs water from the soil?",
+a:["Flower","Roots","Leaves","Fruit"],
+correct:1,
+ex:"Roots absorb water and minerals from the soil."
+},
+
+{
+subject:"Science",topic:"Human Body",
+difficulty:"Easy",
+q:"Which organ pumps blood around the human body?",
+a:["Lungs","Brain","Heart","Stomach"],
+correct:2,
+ex:"The heart pumps blood throughout the body."
+},
+
+{
+subject:"Science",topic:"Force and Motion",
+difficulty:"Medium",
+q:"What is the SI unit of force?",
+a:["Joule","Newton","Watt","Metre"],
+correct:1,
+ex:"Force is measured in newtons (N)."
+},
+
+{
+subject:"Science",topic:"Light",
+difficulty:"Easy",
+q:"Which object allows light to pass through it clearly?",
+a:["Wood","Clear glass","Brick","Cardboard"],
+correct:1,
+ex:"Clear glass is transparent and allows light through."
+},
+
+{
+subject:"Science",topic:"Environment",
+difficulty:"Easy",
+q:"Which of these is a renewable energy source?",
+a:["Coal","Petrol","Solar energy","Natural gas"],
+correct:2,
+ex:"Solar energy comes from sunlight and is renewable."
+},
+
+{
+subject:"Mathematics",topic:"Addition and Subtraction",
+difficulty:"Easy",
+q:"What is 125 + 75?",
+a:["180","190","200","210"],
+correct:2,
+ex:"125 + 75 = 200."
+},
+
+{
+subject:"Mathematics",topic:"Multiplication and Division",
+difficulty:"Easy",
+q:"What is 12 × 8?",
+a:["86","96","106","88"],
+correct:1,
+ex:"12 multiplied by 8 equals 96."
+},
+
+{
+subject:"Mathematics",topic:"Fractions",
+difficulty:"Medium",
+q:"What is one-half of 80?",
+a:["20","30","40","50"],
+correct:2,
+ex:"80 divided by 2 equals 40."
+},
+
+{
+subject:"Mathematics",topic:"Algebra",
+difficulty:"Medium",
+q:"If x + 5 = 12, what is x?",
+a:["5","6","7","8"],
+correct:2,
+ex:"Subtract 5 from both sides: x = 12 - 5 = 7."
+},
+
+{
+subject:"Mathematics",topic:"Geometry",
+difficulty:"Easy",
+q:"How many sides does a hexagon have?",
+a:["5","6","7","8"],
+correct:1,
+ex:"A hexagon has six sides."
+},
+
+{
+subject:"English",topic:"Grammar",
+difficulty:"Easy",
+q:"Which of these is a noun?",
+a:["Quickly","Beautiful","Teacher","Run"],
+correct:2,
+ex:"Teacher is a noun because it names a person."
+},
+
+{
+subject:"English",topic:"Tenses",
+difficulty:"Easy",
+q:"Which sentence is in the past tense?",
+a:["I play cricket.","I will play cricket.","I played cricket.","I am playing cricket."],
+correct:2,
+ex:"Played is the past tense of play."
+},
+
+{
+subject:"English",topic:"Nouns and Pronouns",
+difficulty:"Easy",
+q:"Which pronoun can replace the name Riya?",
+a:["It","She","They","We"],
+correct:1,
+ex:"She is a singular pronoun commonly used for Riya."
+},
+
+{
+subject:"English",topic:"Vocabulary",
+difficulty:"Easy",
+q:"What is the opposite of Ancient?",
+a:["Historic","Modern","Old","Past"],
+correct:1,
+ex:"Modern means recent or present-day, opposite to ancient."
+},
+
+{
+subject:"Computer Science",topic:"Computer Basics",
+difficulty:"Easy",
+q:"What does CPU stand for?",
+a:["Central Processing Unit","Computer Personal Unit","Control Program Utility","Central Power Unit"],
+correct:0,
+ex:"CPU stands for Central Processing Unit."
+},
+
+{
+subject:"Computer Science",topic:"HTML",
+difficulty:"Easy",
+q:"Which HTML tag creates the largest standard heading?",
+a:["<h6>","<p>","<h1>","<head>"],
+correct:2,
+ex:"The h1 tag represents the highest-level HTML heading."
+},
+
+{
+subject:"Computer Science",topic:"CSS",
+difficulty:"Easy",
+q:"Which CSS property changes the text colour?",
+a:["font-size","color","background","border"],
+correct:1,
+ex:"The color property controls text colour."
+},
+
+{
+subject:"Computer Science",topic:"JavaScript",
+difficulty:"Easy",
+q:"Which keyword declares a variable that can be reassigned in JavaScript?",
+a:["const","let","static","style"],
+correct:1,
+ex:"The let keyword declares a block-scoped variable that can be reassigned."
+},
+
+{
+subject:"Social Science",topic:"Geography",
+difficulty:"Easy",
+q:"Which is the largest ocean on Earth?",
+a:["Indian","Atlantic","Pacific","Arctic"],
+correct:2,
+ex:"The Pacific Ocean is the largest ocean."
+},
+
+{
+subject:"Social Science",topic:"History",
+difficulty:"Easy",
+q:"Who was the first Prime Minister of independent India?",
+a:["Mahatma Gandhi","Jawaharlal Nehru","Sardar Patel","Rajendra Prasad"],
+correct:1,
+ex:"Jawaharlal Nehru became India's first Prime Minister in 1947."
+},
+
+{
+subject:"Physics",topic:"Motion",
+difficulty:"Medium",
+q:"What is the SI unit of speed?",
+a:["Metre","Second","Metre per second","Newton"],
+correct:2,
+ex:"Speed is measured in metres per second (m/s)."
+},
+
+{
+subject:"Chemistry",topic:"Atoms and Molecules",
+difficulty:"Medium",
+q:"What is the chemical symbol for oxygen?",
+a:["Ox","O","Og","On"],
+correct:1,
+ex:"O is the chemical symbol for oxygen."
+},
+
+{
+subject:"Biology",topic:"Cell Structure",
+difficulty:"Easy",
+q:"Which structure controls most activities of a cell?",
+a:["Cell wall","Nucleus","Cytoplasm","Membrane"],
+correct:1,
+ex:"The nucleus contains genetic material and controls many cell activities."
+},
+
+{
+subject:"EVS",topic:"Water",
+difficulty:"Easy",
+q:"What is the process of changing liquid water into water vapour called?",
+a:["Freezing","Condensation","Evaporation","Melting"],
+correct:2,
+ex:"Evaporation changes liquid water into water vapour."
+}
+
+];
+
+// ----------------------------------
+// SAVE AND LOAD DATA
+// ----------------------------------
+
+function loadData(key,fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch(e) {
+    return fallback;
+  }
+}
+
+let customQuestions = loadData("novaQuestions",[]);
+let stats = loadData("novaStats",{
+  xp:0,
+  quizzes:0,
+  best:0
+});
+
+let questions = [];
+let current = 0;
+let score = 0;
+let time = 30;
+let timerInterval = null;
+let answered = false;
+let wrongAnswers = [];
+let selectedClass = "";
+let selectedSubject = "";
+let selectedTopic = "";
+
+// ----------------------------------
+// DASHBOARD
+// ----------------------------------
+
+function updateDashboard() {
+  document.getElementById("totalXP").innerText = stats.xp;
+  document.getElementById("totalQuizzes").innerText = stats.quizzes;
+  document.getElementById("bestScore").innerText = stats.best + "%";
+}
+
+updateDashboard();
+
+// ----------------------------------
+// SUBJECT SELECTION
+// ----------------------------------
+
+function updateSubjects() {
+  const cls = document.getElementById("classSelect").value;
+  const subject = document.getElementById("subjectSelect");
+  const topic = document.getElementById("topicSelect");
+
+  subject.innerHTML = '<option value="">Choose subject</option>';
+  topic.innerHTML = '<option value="">Choose topic</option>';
+
+  if(!cls) return;
+
+  classSubjects[cls].forEach(s => {
+    subject.add(new Option(s,s));
+  });
+}
+
+// ----------------------------------
+// TOPIC SELECTION
+// ----------------------------------
+
+function updateTopics() {
+  const s = document.getElementById("subjectSelect").value;
+  const topic = document.getElementById("topicSelect");
+
+  topic.innerHTML = '<option value="">Choose topic</option>';
+
+  if(!s) return;
+
+  topicData[s].forEach(t => {
+    topic.add(new Option(t,t));
+  });
+}
+
+// ----------------------------------
+// ADD CUSTOM QUESTION
+// ----------------------------------
+
+function addQuestion() {
+  const cls = document.getElementById("classSelect").value;
+  const subject = document.getElementById("subjectSelect").value;
+  const topic = document.getElementById("topicSelect").value;
+
+  const q = document.getElementById("newQuestion").value.trim();
+  const a = [
+    document.getElementById("optA").value.trim(),
+    document.getElementById("optB").value.trim(),
+    document.getElementById("optC").value.trim(),
+    document.getElementById("optD").value.trim()
+  ];
+
+  const correct = Number(document.getElementById("correctAnswer").value);
+  const ex = document.getElementById("newExplanation").value.trim();
+
+  if(!cls || !subject || !topic) {
+    alert("Select your class, subject and topic first.");
+    return;
+  }
+
+  if(!q || a.some(x => !x) || !ex) {
+    alert("Please fill in the question, all four options and explanation.");
+    return;
+  }
+
+  customQuestions.push({
+    classLevel:cls,
+    subject,
+    topic,
+    difficulty:"Easy",
+    q,
+    a,
+    correct,
+    ex
+  });
+
+  localStorage.setItem("novaQuestions",JSON.stringify(customQuestions));
+
+  document.getElementById("newQuestion").value = "";
+  ["optA","optB","optC","optD","newExplanation"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+
+  alert("Question added successfully! 🎉");
+}
+
+// ----------------------------------
+// START QUIZ
+// ----------------------------------
+
+function startQuiz() {
+
+  selectedClass = document.getElementById("classSelect").value;
+  selectedSubject = document.getElementById("subjectSelect").value;
+  selectedTopic = document.getElementById("topicSelect").value;
+
+  const name = document.getElementById("studentName").value.trim();
+
+  if(!name || !selectedClass || !selectedSubject || !selectedTopic) {
+    alert("Please enter your name and select class, subject and topic.");
+    return;
+  }
+
+  localStorage.setItem("novaName",name);
+  localStorage.setItem("novaClass",selectedClass);
+
+  const difficulty = document.getElementById("difficulty").value;
+  const count = Number(document.getElementById("questionCount").value);
+
+  const all = [
+    ...defaultQuestions,
+    ...customQuestions.filter(q => q.classLevel === selectedClass)
+  ];
+
+  questions = all.filter(q => {
+    const subjectMatch = q.subject === selectedSubject;
+    const topicMatch = q.topic === selectedTopic;
+    const levelMatch = difficulty === "All" || q.difficulty === difficulty;
+
+    return subjectMatch && topicMatch && levelMatch;
+  });
+
+  if(questions.length === 0) {
+    alert("No questions are available for this topic yet. Add your own questions using the Create Your Own Questions section!");
+    return;
+  }
+
+  questions = shuffle([...questions]).slice(0,count);
+
+  current = 0;
+  score = 0;
+  wrongAnswers = [];
+
+  document.getElementById("quizSubject").innerText = selectedSubject + " • " + selectedTopic;
+  document.getElementById("quizClass").innerText = "Class " + selectedClass;
+
+  showScreen("quiz");
+  showQuestion();
+}
+
+// ----------------------------------
+// SHUFFLE QUESTIONS
+// ----------------------------------
+
+function shuffle(arr) {
+  for(let i=arr.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// ----------------------------------
+// DISPLAY QUESTION
+// ----------------------------------
+
+function showQuestion() {
+
+  clearInterval(timerInterval);
+
+  answered = false;
+  time = 30;
+
+  const q = questions[current];
+
+  document.getElementById("timer").innerText = "⏱ " + time;
+  document.getElementById("quizScore").innerText = "⭐ " + score + " XP";
+
+  document.getElementById("questionCounter").innerText =
+    "QUESTION " + (current+1) + " OF " + questions.length;
+
+  document.getElementById("progressBar").style.width =
+    (current/questions.length*100) + "%";
+
+  document.getElementById("questionText").innerText = q.q;
+
+  const options = document.getElementById("options");
+  options.innerHTML = "";
+
+  q.a.forEach((answer,index) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.innerText = String.fromCharCode(65+index) + ". " + answer;
+    btn.onclick = () => checkAnswer(index);
+    options.appendChild(btn);
+  });
+
+  document.getElementById("feedback").style.display = "none";
+  document.getElementById("nextButton").classList.add("hidden");
+
+  timerInterval = setInterval(() => {
+    time--;
+    document.getElementById("timer").innerText = "⏱ " + time;
+
+    if(time <= 0) {
+      clearInterval(timerInterval);
+      checkAnswer(-1);
+    }
+  },1000);
+}
+
+// ----------------------------------
+// ANSWER CHECKING
+// ----------------------------------
+
+function checkAnswer(choice) {
+
+  if(answered) return;
+
+  answered = true;
+  clearInterval(timerInterval);
+
+  const q = questions[current];
+  const buttons = document.querySelectorAll(".option");
+
+  buttons.forEach((btn,index) => {
+    btn.disabled = true;
+    if(index === q.correct) btn.classList.add("correct");
+  });
+
+  const feedback = document.getElementById("feedback");
+
+  if(choice === q.correct) {
+    score++;
+    feedback.innerHTML =
+      "✅ Excellent! Correct answer!<br><br>" + q.ex;
+  } else {
+    if(choice >= 0) buttons[choice].classList.add("wrong");
+
+    feedback.innerHTML =
+      "❌ Not quite!<br><br>Correct answer: " +
+      q.a[q.correct] + "<br><br>" + q.ex;
+
+    wrongAnswers.push({
+      question:q.q,
+      yourAnswer:choice < 0 ? "Time expired" : q.a[choice],
+      correctAnswer:q.a[q.correct],
+      explanation:q.ex
+    });
+  }
+
+  feedback.style.display = "block";
+
+  document.getElementById("quizScore").innerText = "⭐ " + score + " XP";
+
+  const next = document.getElementById("nextButton");
+  next.classList.remove("hidden");
+  next.innerText =
+    current === questions.length-1 ? "VIEW RESULTS 🏆" : "NEXT QUESTION ➜";
+}
+
+// ----------------------------------
+// NEXT QUESTION
+// ----------------------------------
+
+function nextQuestion() {
+  current++;
+
+  if(current < questions.length) {
+    showQuestion();
+  } else {
+    showResults();
+  }
+}
+
+// ----------------------------------
+// RESULTS
+// ----------------------------------
+
+function showResults() {
+
+  clearInterval(timerInterval);
+
+  const total = questions.length;
+  const percentage = Math.round(score/total*100);
+  const xp = score*10;
+
+  stats.xp += xp;
+  stats.quizzes++;
+  stats.best = Math.max(stats.best,percentage);
+
+  localStorage.setItem("novaStats",JSON.stringify(stats));
+
+  updateDashboard();
+
+  document.getElementById("finalScore").innerText = percentage + "%";
+  document.getElementById("correctCount").innerText = score;
+  document.getElementById("wrongCount").innerText = total-score;
+  document.getElementById("earnedXP").innerText = xp;
+
+  let message = percentage >= 90 ?
+    "🏆 Outstanding! You are a star!" :
+    percentage >= 60 ?
+    "👏 Great work! Keep improving!" :
+    "💪 Keep practising. You can do it!";
+
+  document.getElementById("resultMessage").innerText = message;
+
+  const review = document.getElementById("review");
+  review.innerHTML = "";
+
+  if(wrongAnswers.length === 0) {
+    review.innerHTML = "<p class='muted'>Perfect! You answered every question correctly. 🎉</p>";
+  } else {
+    wrongAnswers.forEach((item,index) => {
+      const div = document.createElement("div");
+      div.className = "review-item";
+
+      const title = document.createElement("strong");
+      title.innerText = (index+1) + ". " + item.question;
+
+      const your = document.createElement("p");
+      your.innerText = "Your answer: " + item.yourAnswer;
+
+      const correct = document.createElement("p");
+      correct.innerText = "Correct answer: " + item.correctAnswer;
+
+      const explanation = document.createElement("p");
+      explanation.innerText = "Explanation: " + item.explanation;
+
+      div.append(title,your,correct,explanation);
+      review.appendChild(div);
+    });
+  }
+
+  showScreen("result");
+}
+
+// ----------------------------------
+// RETRY QUIZ
+// ----------------------------------
+
+function retryQuiz() {
+  startQuiz();
+}
+
+// ----------------------------------
+// EXIT AND NAVIGATION
+// ----------------------------------
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => {
+    s.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function showHome() {
+  clearInterval(timerInterval);
+  showScreen("home");
+  updateDashboard();
+}
+
+function exitQuiz() {
+  if(confirm("Are you sure you want to exit this quiz?")) {
+    clearInterval(timerInterval);
+    showHome();
+  }
+}
+
+// ----------------------------------
+// LOAD PROFILE
+// ----------------------------------
+
+document.getElementById("studentName").value =
+  localStorage.getItem("novaName") || "";
+
+document.getElementById("classSelect").value =
+  localStorage.getItem("novaClass") || "";
+
+if(document.getElementById("classSelect").value) {
+  updateSubjects();
+}
+
+</script>
+
+</body>
+</html>
